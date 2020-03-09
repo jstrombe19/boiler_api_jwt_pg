@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_action :is_user_authorized?, only: [:profile, :update, :destroy]
 
   def create
     user = User.new(user_params)
@@ -11,15 +10,18 @@ class UsersController < ApplicationController
   end
   
   def profile
+    is_user_authorized?(request)
     render json: @user 
   end
   
   def update
+    is_user_authorized?(request)
     @user.update(user_params)
     render json: @user 
   end
-
+  
   def destroy 
+    is_user_authorized?(request)
     @user.destroy 
   end
 
@@ -43,3 +45,8 @@ class UsersController < ApplicationController
   end
 
 end
+
+
+ # before_action only: [:profile, :update, :destroy] do 
+  #   is_user_authorized?(request)
+  # end
